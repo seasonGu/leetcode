@@ -81,3 +81,41 @@
             return head;
         }
     }
+
+## 94. 二叉树的中序遍历
+给定一个二叉树的根节点 root ，返回它的 中序 遍历。
+
+![](https://assets.leetcode.com/uploads/2020/09/15/inorder_1.jpg)
+
+中序遍历：左中右
+
+    /**
+    * Definition for a binary tree node.
+    * public class TreeNode {
+    *     int val;
+    *     TreeNode left;
+    *     TreeNode right;
+    *     TreeNode() {}
+    *     TreeNode(int val) { this.val = val; }
+    *     TreeNode(int val, TreeNode left, TreeNode right) {
+    *         this.val = val;
+    *         this.left = left;
+    *         this.right = right;
+    *     }
+    * }
+    */
+    class Solution {
+        public List<Integer> inorderTraversal(TreeNode root) {
+            List<Integer> list = new ArrayList();
+            middleOrder(root, list);
+            return list;
+        }
+
+        public void middleOrder(TreeNode root, List<Integer> list) {
+            if(root == null)
+                return;
+            middleOrder(root.left, list);
+            list.add(root.val);
+            middleOrder(root.right, list);
+        }
+    }
