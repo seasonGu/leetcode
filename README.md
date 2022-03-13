@@ -113,6 +113,45 @@
         }
     }
 
+## 4. 寻找两个正序数组的中位数
+给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+
+算法的时间复杂度应该为 O(log (m+n)) 。
+
+示例 1：
+
+输入：nums1 = [1,3], nums2 = [2]
+输出：2.00000
+解释：合并数组 = [1,2,3] ，中位数 2
+
+示例 2：
+
+输入：nums1 = [1,2], nums2 = [3,4]
+输出：2.50000
+解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
+
+    class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int length1 = nums1.length;
+        int length2 = nums2.length;
+        if(length1 == 0 && length2 == 0)
+            return 0;
+        if(length1 == 0 && length2 > 0)
+            return length2 % 2 == 0 ? ((double)(nums2[length2/2-1] + nums2[length2/2]))/2 : nums2[length2/2];
+        if(length1 > 0 && length2 == 0)
+            return length1 % 2 == 0 ? ((double)(nums1[length1/2-1] + nums1[length1/2]))/2 : nums1[length1/2];
+        int [] sum = new int[length1 + length2];
+        for(int i = 0; i < length1; i++) {
+            sum[i] = nums1[i];
+        }
+        for(int j = 0; j < length2; j++) {
+            sum[j+length1] = nums2[j];
+        }
+        Arrays.sort(sum);
+        return sum.length%2 == 0 ? ((double)(sum[sum.length/2 -1] + sum[sum.length/2])/2) : sum[sum.length/2];
+    }
+}
+
 ## 94. 二叉树的中序遍历
 给定一个二叉树的根节点 root ，返回它的 中序 遍历。
 
