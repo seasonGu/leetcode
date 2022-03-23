@@ -131,26 +131,73 @@
 解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
 
     class Solution {
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int length1 = nums1.length;
-        int length2 = nums2.length;
-        if(length1 == 0 && length2 == 0)
-            return 0;
-        if(length1 == 0 && length2 > 0)
-            return length2 % 2 == 0 ? ((double)(nums2[length2/2-1] + nums2[length2/2]))/2 : nums2[length2/2];
-        if(length1 > 0 && length2 == 0)
-            return length1 % 2 == 0 ? ((double)(nums1[length1/2-1] + nums1[length1/2]))/2 : nums1[length1/2];
-        int [] sum = new int[length1 + length2];
-        for(int i = 0; i < length1; i++) {
-            sum[i] = nums1[i];
+        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+            int length1 = nums1.length;
+            int length2 = nums2.length;
+            if(length1 == 0 && length2 == 0)
+                return 0;
+            if(length1 == 0 && length2 > 0)
+                return length2 % 2 == 0 ? ((double)(nums2[length2/2-1] + nums2[length2/2]))/2 : nums2[length2/2];
+            if(length1 > 0 && length2 == 0)
+                return length1 % 2 == 0 ? ((double)(nums1[length1/2-1] + nums1[length1/2]))/2 : nums1[length1/2];
+            int [] sum = new int[length1 + length2];
+            for(int i = 0; i < length1; i++) {
+                sum[i] = nums1[i];
+            }
+            for(int j = 0; j < length2; j++) {
+                sum[j+length1] = nums2[j];
+            }
+            Arrays.sort(sum);
+            return sum.length%2 == 0 ? ((double)(sum[sum.length/2 -1] + sum[sum.length/2])/2) : sum[sum.length/2];
         }
-        for(int j = 0; j < length2; j++) {
-            sum[j+length1] = nums2[j];
-        }
-        Arrays.sort(sum);
-        return sum.length%2 == 0 ? ((double)(sum[sum.length/2 -1] + sum[sum.length/2])/2) : sum[sum.length/2];
     }
-}
+
+## 5. 最长回文子串
+给你一个字符串 s，找到 s 中最长的回文子串。
+
+ 
+
+示例 1：
+
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+
+    class Solution {
+        public String longestPalindrome(String s) {
+            if(s.length() < 2)
+                return s;
+            int len = s.length();
+            int maxlen = 1;
+            int begin = 0;
+            //存是否是回文
+            boolean hui[][] = new boolean[len][len];
+            for(int i = 0; i < len; i++)
+                hui[i][i] = true;
+            char [] array = s.toCharArray();
+            for(int l = 2; l <= len; l++) {
+                for(int i = 0; i < len; i++) {
+                    int j = l + i -1;
+                    if(j >= len)
+                    break;
+                    if(array[i]!= array[j])
+                    hui[i][j] = false;
+                    else {
+                        if(j - i <3)
+                            hui[i][j] = true;
+                        else
+                            hui[i][j] = hui[i+1][j-1];
+                    }
+
+                    if(hui[i][j] && j - i + 1 > maxlen) {
+                        maxlen = j - i + 1;
+                        begin = i;
+                    }
+                }
+            }
+            return s.substring(begin, begin + maxlen);
+        }
+    }
 
 ## 94. 二叉树的中序遍历
 给定一个二叉树的根节点 root ，返回它的 中序 遍历。
