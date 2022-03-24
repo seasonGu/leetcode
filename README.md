@@ -199,6 +199,56 @@
         }
     }
 
+## 6. Z 字形变换
+将一个给定字符串 s 根据给定的行数 numRows ，以从上往下、从左到右进行 Z 字形排列。
+
+比如输入字符串为 "PAYPALISHIRING" 行数为 3 时，排列如下：
+
+P   A   H   N
+A P L S I I G
+Y   I   R
+之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如："PAHNAPLSIIGYIR"。
+
+    class Solution {
+        public static String convert(String s, int numRows) {
+            if(numRows == 1)
+            return s;
+            char[][] charArray = new char[numRows][s.length()];
+            int slen = s.length();
+            int yushu = slen % (2 * numRows - 2);
+            int len = 0;
+            if (yushu == 0)
+                len = slen / (2 * numRows - 2) * (numRows - 1);
+            else if (yushu <= numRows && yushu > 0)
+                len = slen / (2 * numRows - 2) * (numRows - 1) + 1;
+            else if (yushu > numRows)
+                len = slen / (2 * numRows - 2) * (numRows - 1) + yushu - numRows + 1;
+
+            int index = 0;
+            for (int i = 0; i < len; i++) {
+                //vertical
+                if (i % (numRows - 1) == 0) {
+                    for (int j = 0; j < numRows; j++) {
+                        charArray[j][i] = s.charAt(index++);
+                        if (index >= slen)
+                            break;
+                    }
+                } else {
+                    int j = numRows - 1 - i % (numRows - 1);
+                    charArray[j][i] = s.charAt(index++);
+                    if (index >= slen)
+                        break;
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < numRows; i++)
+                for (int j = 0; j < len; j++) {
+                    if(charArray[i][j]!=0)
+                        sb.append(charArray[i][j]);
+                }
+            return sb.toString();
+        }
+    }
 ## 94. 二叉树的中序遍历
 给定一个二叉树的根节点 root ，返回它的 中序 遍历。
 
