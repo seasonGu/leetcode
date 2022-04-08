@@ -113,6 +113,25 @@
         }
     }
 
+    //上述暴力枚举时间复杂度太高，用滑动窗口
+
+    class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s.length() <=1)
+            return s.length();
+        Map<Character, Integer> map = new HashMap<>();
+        int left = 0;
+        int max = 0;
+        for(int i =0; i< s.length(); i++) {
+            if(map.containsKey(s.charAt(i)))
+                left = Math.max(left,map.get(s.charAt(i)) + 1);
+            map.put(s.charAt(i),i);
+            max = Math.max(max, i-left+1);
+        }
+        return max;
+    }
+}
+
 ## 4. 寻找两个正序数组的中位数
 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
 
